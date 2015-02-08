@@ -24,14 +24,9 @@ import (
 	"math/rand"
 )
 
-type ExtendedRand struct {
-	rand.Rand
-}
-
-func RandomByte() byte {
-	return byte(rand.Int())
-}
-
-func (r *ExtendedRand) Byte() byte {
+func RandomByte(r *rand.Rand) byte {
 	return byte(r.Int())
+}
+func RandomBool(r *rand.Rand) bool {
+	return bool(r.Int()%2 == 1)
 }
