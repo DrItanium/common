@@ -50,11 +50,31 @@ func StopRunningOnSignal(sig syscall.Signal) {
 	}()
 }
 
+func StopRunningOnSignalAndForward(sig syscall.Signal, passthrough chan bool) {
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, sig)
+	go func() {
+		<-signalChan
+		running = false
+		passthrough <- true
+	}()
+}
+
 func StartRunningOnSignal(sig syscall.Signal) {
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, sig)
 	go func() {
 		<-signalChan
 		running = true
+	}()
+}
+
+func StartRunningOnSignalAndForward(sig syscall.Signal, passthrough chan bool) {
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, sig)
+	go func() {
+		<-signalChan
+		running = true
+		passthrough <- true
 	}()
 }
