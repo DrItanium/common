@@ -22,11 +22,21 @@ package neuron
 
 import (
 	"math/rand"
+	"time"
 )
 
+func GlobalRandomBool() bool {
+	return bool(rand.Int()%2 == 1)
+}
+func GlobalRandomByte() byte {
+	return byte(rand.Int())
+}
 func RandomByte(r *rand.Rand) byte {
 	return byte(r.Int())
 }
 func RandomBool(r *rand.Rand) bool {
 	return bool(r.Int()%2 == 1)
+}
+func NewTimeSourcedRand() *rand.Rand {
+	return rand.New(rand.NewSource(time.Now().UnixNano()))
 }
